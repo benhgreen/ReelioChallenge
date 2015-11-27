@@ -1,13 +1,12 @@
 from TodoAPI.models import TodoItem
+from TodoAPI.permissions import IsOwner
+from TodoAPI.serializers import TodoItemSerializer, TodoListSerializer, \
+    UserSerializer
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
-from TodoAPI.serializers import TodoItemSerializer, TodoListSerializer, \
-    UserSerializer
-from TodoAPI.permissions import IsOwner
 
 
 class TodoListViewSet(viewsets.ModelViewSet):
