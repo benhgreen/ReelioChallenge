@@ -1,13 +1,22 @@
-from datetime import datetime
-
 from django.contrib.auth.models import User
 from django.db import models
 
 class TodoList(models.Model):
     user = models.OneToOneField(User)
+    name = models.CharField(max_length=64)
+    created_at = models.DateTimeField(auto_now=True)
+
+    def number_of_items(self):
+        return self.items.count()
+
+    class Meta:
+        unique_together = ('user', 'name')
 
 class TodoItem(models.Model):
-    list = models.ForeignKey(TodoList)
-    created_at = models.DateTimeField(default=datetime.now())
+    list = models.ForeignKey(TodoList, related_name='items')
+    created_at = models.DateTimeField(auto_now=True)
     text = models.CharField(max_length=128)
     hidden = models.BooleanField()
+
+    class Meta:
+        unique_together = ('list', 'text')
