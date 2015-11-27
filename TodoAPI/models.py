@@ -12,6 +12,9 @@ class TodoList(models.Model):
     class Meta:
         unique_together = ('user', 'name')
 
+    def __str__(self):
+        return self.name
+
 class TodoItem(models.Model):
     list = models.ForeignKey(TodoList, related_name='items')
     created_at = models.DateTimeField(auto_now=True)
@@ -20,3 +23,6 @@ class TodoItem(models.Model):
 
     class Meta:
         unique_together = ('list', 'text')
+
+    def __str__(self):
+        return self.text

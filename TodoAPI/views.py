@@ -1,3 +1,4 @@
+from TodoAPI.models import TodoItem
 from django.contrib.auth.models import User
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
@@ -21,10 +22,7 @@ class TodoItemViewSet(viewsets.ModelViewSet):
     serializer_class = TodoItemSerializer
 
     def get_queryset(self):
-        items = set()
-        for list in self.request.user.lists.all():
-            items.add(list.items)
-        return items
+        return TodoItem.objects.filter(list__user=self.request.user)
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):

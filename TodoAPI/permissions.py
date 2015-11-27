@@ -8,7 +8,10 @@ class IsOwner(permissions.BasePermission):
     """
 
     def has_object_permission(self, request, view, obj):
-        return obj.user == request.user
+        if hasattr(obj, 'user'):
+            return obj.user == request.user
+        elif hasattr(obj, 'list'):
+            return obj.list.user == request.user
 
 
     def has_permission(self, request, view):
