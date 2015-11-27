@@ -41,7 +41,7 @@ def create_user(request):
         user = User.objects.create_user(
             **user_data
         )
-        return Response(UserSerializer(instance=user).data, status=200)
+        return Response(UserSerializer(instance=user).data, status=201)
     else:
         return Response(serialized._errors, status=400)
 
