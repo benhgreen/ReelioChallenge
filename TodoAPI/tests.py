@@ -46,7 +46,7 @@ class TodoAPITest(APITestCase):
 
     def test_operations(self):
         """
-        Ensure we can create a new list, add items, delete items, restore items,
+        Ensure we can create a new list, add items, delete items, restore items
         and delete the list
         """
         self.client.post(self.register_user_url, self.user_info, format='json')
@@ -99,6 +99,7 @@ class TodoAPITest(APITestCase):
         self.client.logout()
         self.client.login(**self.user_info)
         response = self.client.delete(self.item_url + '1/', format='json')
+        self.assertEqual(response.status_code, 204)
         self.assertTrue(TodoItem.objects.first().hidden)
 
         # make sure our item is gone from the items list
