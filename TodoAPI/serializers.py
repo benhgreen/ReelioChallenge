@@ -9,19 +9,22 @@ class TodoItemSerializer(serializers.ModelSerializer):
         fields = ('id', 'text', 'created_at')
 
 
-class TodoListSerializer(serializers.HyperlinkedModelSerializer):
+class TodoListSerializer(serializers.ModelSerializer):
     items = TodoItemSerializer(many=True)
 
     class Meta:
         model = TodoList
         fields = (
-        'id', 'name', 'user', 'number_of_items', 'items', 'created_at')
+            'id', 'name', 'user', 'number_of_items', 'items', 'created_at'
+        )
 
 
 class UserSerializer(serializers.ModelSerializer):
-    lists = serializers.PrimaryKeyRelatedField(many=True,
-                                               queryset=TodoList.objects.all())
-
+    lists = TodoListSerializer(read_only=True, many=True)
     class Meta:
         model = User
-        fields = ('id', 'username', 'lists')
+        fields = (
+            'id', 'username', 'email', 'lists'
+        )
+
+
