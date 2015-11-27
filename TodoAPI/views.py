@@ -33,6 +33,11 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 
 @api_view(['POST'])
 def create_user(request):
+    """
+    Creates a new user from the register/ endpoint
+    :param request: POST with username, password, [email] fields
+    :return: New user, in JSON
+    """
     VALID_USER_FIELDS = [f.name for f in User._meta.fields]
     serialized = UserSerializer(data=request.data)
     if serialized.is_valid():
@@ -48,6 +53,13 @@ def create_user(request):
 
 @api_view(['POST'])
 def restore_item(request, item_id):
+    """
+    Restore previously deleted item, making it viewable in item and list lists.
+    :param request: Empty POST to recover/<id>, where <id> is an item owned by
+                    the user.
+    :param item_id: ID of item to restore.
+    :return: Item in JSON format.
+    """
     try:
         item = TodoItem.objects.get(pk=item_id)
     except ObjectDoesNotExist:

@@ -29,5 +29,5 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^', include(router.urls)),
     url(r'^register', views.create_user, name='register_user'),
-    url(r'^recover/([0-9]+)', views.restore_item)
+    url(r'^recover/([0-9]+)', views.restore_item, name='restore')
 ]
