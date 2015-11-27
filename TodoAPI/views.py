@@ -45,6 +45,7 @@ def create_user(request):
     else:
         return Response(serialized._errors, status=400)
 
+
 @api_view(['POST'])
 def restore_item(request, item_id):
     try:

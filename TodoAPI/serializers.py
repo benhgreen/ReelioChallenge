@@ -1,6 +1,6 @@
+from TodoAPI.models import TodoList, TodoItem
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from TodoAPI.models import TodoList, TodoItem
 from rest_framework.exceptions import PermissionDenied
 
 
@@ -30,10 +30,10 @@ class TodoListSerializer(serializers.ModelSerializer):
         return serializer.data
 
     def create(self, validated_data):
-        list = TodoList(**validated_data)
-        list.user = self.context['request'].user
-        list.save()
-        return list
+        new_list = TodoList(**validated_data)
+        new_list.user = self.context['request'].user
+        new_list.save()
+        return new_list
 
     class Meta:
         model = TodoList

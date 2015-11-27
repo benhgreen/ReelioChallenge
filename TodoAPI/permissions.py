@@ -13,7 +13,5 @@ class IsOwner(permissions.BasePermission):
         elif hasattr(obj, 'list'):
             return obj.list.user == request.user
 
-
     def has_permission(self, request, view):
         return not isinstance(request.user, AnonymousUser)
-
