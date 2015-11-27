@@ -1,17 +1,15 @@
 from django.contrib.auth.models import User
-from django.shortcuts import render
-from rest_framework import generics
-# Create your views here.
 from rest_framework import viewsets
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
 from TodoAPI.serializers import TodoItemSerializer, TodoListSerializer, \
     UserSerializer
-from rest_framework.decorators import api_view
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
+from TodoAPI.permissions import IsOwner
 
 
 class TodoListViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsOwner,)
     serializer_class = TodoListSerializer
 
     def get_queryset(self):
@@ -19,7 +17,7 @@ class TodoListViewSet(viewsets.ModelViewSet):
 
 
 class TodoItemViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsOwner,)
     serializer_class = TodoItemSerializer
 
     def get_queryset(self):

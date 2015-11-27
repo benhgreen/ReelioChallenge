@@ -6,11 +6,18 @@ from TodoAPI.models import TodoList, TodoItem
 class TodoItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = TodoItem
-        fields = ('id', 'text', 'created_at')
+        fields = ('id', 'text', 'list', 'created_at')
 
 
 class TodoListSerializer(serializers.ModelSerializer):
-    items = TodoItemSerializer(many=True)
+    items = TodoItemSerializer(many=True, read_only=True)
+    user = serializers.StringRelatedField()
+
+    def create(self, validated_data):
+        list = TodoList(**validated_data)
+        list.user = self.context['request'].user
+        list.save()
+        return list
 
     class Meta:
         model = TodoList
@@ -20,11 +27,10 @@ class TodoListSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    lists = TodoListSerializer(read_only=True, many=True)
     class Meta:
         model = User
         fields = (
-            'id', 'username', 'email', 'lists'
+            'id', 'username', 'email'
         )
 
 
