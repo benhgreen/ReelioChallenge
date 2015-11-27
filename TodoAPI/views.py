@@ -1,5 +1,6 @@
 from TodoAPI.models import TodoItem
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -22,7 +23,8 @@ class TodoItemViewSet(viewsets.ModelViewSet):
     serializer_class = TodoItemSerializer
 
     def get_queryset(self):
-        return TodoItem.objects.filter(list__user=self.request.user)
+        return TodoItem.objects.filter(list__user=self.request.user,
+                                       hidden=False)
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
@@ -43,3 +45,17 @@ def create_user(request):
         return Response(UserSerializer(instance=user).data, status=200)
     else:
         return Response(serialized._errors, status=400)
+
+@api_view(['POST'])
+def restore_item(request, item_id):
+    try:
+        item = TodoItem.objects.get(pk=item_id)
+    except ObjectDoesNotExist:
+        return Response(status=404)
+    else:
+        if item.list.user == request.user:
+            item.hidden = False
+            item.save()
+            return Response(TodoItemSerializer(item).data, 200)
+        else:
+            return Response(status=403)

@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
-from django.db import models
+from django.db import models, DEFAULT_DB_ALIAS
+
 
 class TodoList(models.Model):
     user = models.ForeignKey(User, related_name='lists')
@@ -20,6 +21,10 @@ class TodoItem(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     text = models.CharField(max_length=128)
     hidden = models.BooleanField()
+
+    def delete(self, using=DEFAULT_DB_ALIAS):
+        self.hidden = True
+        self.save()
 
     class Meta:
         unique_together = ('list', 'text')

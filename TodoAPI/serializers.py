@@ -22,7 +22,12 @@ class TodoItemSerializer(serializers.ModelSerializer):
 
 
 class TodoListSerializer(serializers.ModelSerializer):
-    items = TodoItemSerializer(many=True, read_only=True)
+    items = serializers.SerializerMethodField()
+
+    def get_items(self, obj):
+        query = TodoItem.objects.filter(list=obj.id, hidden=False)
+        serializer = TodoItemSerializer(query, many=True)
+        return serializer.data
 
     def create(self, validated_data):
         list = TodoList(**validated_data)
