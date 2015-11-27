@@ -20,10 +20,12 @@ from rest_framework import routers
 
 router = routers.DefaultRouter()
 router.register(r'lists', views.TodoListViewSet, base_name='lists')
-router.register(r'items', views.TodoItemViewSet)
+router.register(r'items', views.TodoItemViewSet, base_name='items')
+router.register(r'users', views.UserViewSet, base_name='users')
 
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^', include(router.urls)),
 ]

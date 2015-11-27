@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 class TodoList(models.Model):
-    user = models.OneToOneField(User)
+    user = models.ForeignKey(User, related_name='lists')
     name = models.CharField(max_length=64)
     created_at = models.DateTimeField(auto_now=True)
 
