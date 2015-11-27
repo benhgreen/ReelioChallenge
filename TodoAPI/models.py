@@ -8,7 +8,7 @@ class TodoList(models.Model):
     created_at = models.DateTimeField(auto_now=True)
 
     def number_of_items(self):
-        return self.items.count()
+        return self.items.filter(hidden=False).count()
 
     class Meta:
         unique_together = ('user', 'name')

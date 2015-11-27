@@ -5,7 +5,6 @@ from rest_framework.exceptions import PermissionDenied
 
 
 class TodoItemSerializer(serializers.ModelSerializer):
-    list = serializers.StringRelatedField()
 
     def create(self, validated_data):
         item = TodoItem(**validated_data)
